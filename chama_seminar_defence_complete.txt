@@ -1,0 +1,371 @@
+ 
+
+
+DESIGN AND IMPLEMENTATION OF A BLOCKCHAIN BASED DELIVERY MANAGEMENT SYSTEM
+
+By
+
+Adeleye Muaadh Adeniyi
+21/52HA016
+	 
+
+ A SEMINAR REPORT SUBMITTED TO THE DEPARTMENT OF COMPUTER SCIENCE, FACULTY OF COMMUNICATION AND INFORMATION SCIENCES, UNIVERSITY OF ILORIN, ILORIN 
+
+
+26th February 2026
+ 
+CERTIFICATION
+
+This is to certify that this seminar report was written and submitted by Adeleye Muaadh Adeniyi (21/52HA016) to the Department of Computer Science, Faculty of Communication and Information Sciences, University of Ilorin, Ilorin, Nigeria as part of the requirement for the award of Bachelor degree in Computer Science.
+
+
+
+
+
+
+
+
+
+__________________________	                     		__________________________
+
+Prof. A.O. Ameen                                                                                    Date
+(Supervisor)
+
+
+
+
+
+
+
+
+
+__________________________	                     		__________________________
+
+Dr. Ikeola S. Olatinwo				                                 Date
+(Seminar Coordinator)
+ 
+PROJECT APPROVAL PAGE
+
+
+DESIGN AND IMPLEMENTATION OF A BLOCKCHAIN BASED DELIVERY MANAGEMENT SYSTEM
+
+NAME: ADELEYE MUAADH ADENIYI
+
+MATRIC NUMBER: 21/52HA016
+
+
+
+
+
+
+
+__________________________	                     		__________________________
+
+Prof. A.O. Ameen                                                                       Date
+(Supervisor)
+ 
+TABLE OF CONTENTS
+Title Page	i
+Certification	ii
+Project Approval Page	iii
+Table of Contents	iv
+
+I. BACKGROUND TO THE STUDY	1
+II. STATEMENT OF THE PROBLEM	5
+III. AIMS AND OBJECTIVES	6
+IV. SIGNIFICANCE OF THE STUDY	7
+V. LITERATURE REVIEW	9
+a. A REVIEW OF CONCEPT RELATING TO THE WORK	9
+b. REVIEW OF RELATED WORKS	16
+VI. METHODOLOGY	18
+b. SYSTEM METHODOLOGY	22
+VII. REFERENCES	26
+
+
+ 
+I. BACKGROUND TO THE STUDY
+Traditional delivery management systems rely heavily on centralized control, a structure that makes them inherently vulnerable to data alteration, unauthorized access, and a systemic lack of transparency because centralized systems lack auditability and shared visibility across stakeholders (Carey, Coleman & White, 2024). Within these legacy systems, delivery status records are often housed in private databases where they can be modified without leaving a verifiable trail, increasing the risk of fraud and disputes because centralized databases are not designed to share immutable records with all supply chain actors (Nwosu et al., 2022).
+This vulnerability leads to frequent and costly disputes between customers, delivery agents, and service providers, as there is no independent mechanism to verify the true status of a package at any given time. The centralization of data also poses a massive security risk, as a single successful breach can compromise the integrity of the entire system’s delivery history, exposing sensitive customer information and business intelligence since blockchain adoption has been shown to mitigate these risks through decentralization, traceability, and security (Carey, Coleman & White, 2024).
+Consequently, there is an urgent need for a more secure and transparent system that ensures delivery records are accurate, tamper-proof, and accessible for verification by all parties involved. Without such a solution, inefficiencies in last-mile logistics will persist, trust between stakeholders will remain low, and fraud and package theft are likely to remain prevalent in e-commerce delivery networks as highlighted in studies exploring blockchain-enabled supply chain transparency and smart contracts (Alqarni et al., 2023; Sanka et al., 2021).
+
+
+II. STATEMENT OF THE PROBLEM
+
+Traditional delivery management systems rely heavily on centralized control, making them 
+vulnerable to data alteration, unauthorized access, and lack of transparency (Carey, Coleman & 
+White, 2024). Delivery status records are often housed in private databases where they can be
+modified without leaving a verifiable trail. This leads to frequent disputes between customers, 
+delivery agents, and service providers, as there is no independent mechanism to verify the true 
+status of a package at any given time (Aleksieva et al., 2024).
+Centralized data structures also pose significant security risks. A single successful breach can 
+compromise the integrity of the entire system’s delivery history, exposing sensitive customer and 
+business information (Alqarni et al., 2023). Consequently, there is an urgent need for a secure 
+and transparent system that ensures delivery records are accurate, tamper-proof, and verifiable by 
+all stakeholders. Without such a system, the trust deficit in the e-commerce sector will continue 
+to hinder last-mile logistics efficiency and increase the risk of fraud and package theft (Balfaqih 
+et al., 2023).
+
+III. AIMS AND OBJECTIVES
+
+The aim of this project is to design and implement a blockchain based delivery management system that ensures the secure, transparent, and tamper-proof recording of delivery transactions.
+To achieve this aim, the following objectives will be pursued:
+1.	To design a comprehensive delivery management system for tracking product deliveries.
+2.	To implement blockchain technology to record delivery updates securely on a distributed ledger.
+3.	To ensure absolute data integrity and prevent any unauthorized modification of delivery records through cryptographic security.
+4.	To provide all users with real-time access to a transparent and verifiable delivery history.
+
+
+ 
+IV. SIGNIFICANCE OF THE STUDY
+
+The main motivation behind this study is a straightforward problem that many people have encountered: ordering something online and having no reliable way to know what actually happened to it. Whether a package was genuinely lost, delayed, or falsely marked as delivered, there is usually no independent record to consult. This study is significant because it addresses that gap directly, by building a system where every step of a delivery is permanently and transparently recorded on a blockchain that no single party can alter.
+
+For online sellers and e-commerce platforms, this matters financially. False claims of non-delivery are a persistent source of loss, and when there is no tamper-proof record of a completed handover, sellers are often forced to issue refunds even when deliveries were made correctly. The blockchain ledger in this project gives sellers verifiable evidence of every delivery event, from dispatch to confirmed receipt, without requiring them to rely on the carrier's own internal records.
+
+For delivery personnel, the benefit is equally practical. In the current system, agents are frequently blamed for delays or losses that may have occurred at a completely different stage of the process. Because the blockchain records each handover with a timestamp and a digital signature, an agent's portion of the delivery is clearly and permanently documented. Once a customer confirms receipt, the agent's role is closed on the ledger and no longer open to dispute. This protects honest workers and gives logistics companies an objective basis for evaluating performance.
+
+For customers, the value is peace of mind. Tracking information today is usually controlled entirely by the company whose package you are waiting for, meaning updates can be delayed or selectively presented. This project gives customers access to a delivery record they can verify independently, without needing to trust a single company's dashboard. As online shopping continues to grow and consumers have fewer direct relationships with the people handling their goods, that kind of verifiable transparency becomes increasingly important.
+
+From an academic standpoint, this study contributes a working implementation of blockchain technology applied to a concrete logistics problem. Much of the existing research on blockchain focuses on financial transactions or high-level supply chain theory. This project demonstrates how the same principles apply at the level of individual deliveries, using tools like Ethereum smart contracts, NestJS, and React in a system that is realistic to build and deploy. It serves as a practical reference for future research on decentralised logistics, smart contract automation, and IoT integration in delivery networks.
+
+V. LITERATURE REVIEW
+
+a. A REVIEW OF CONCEPT RELATING TO THE WORK
+
+Delivery Management System
+A delivery management system is a digital platform that coordinates, monitors, and controls the movement of goods from sellers or warehouses to customers. It handles order registration, delivery assignment, route planning, status updates, and proof of delivery. Traditional systems rely on centralised databases managed by a single authority. While this model is simple to operate, it creates serious vulnerabilities: a server failure can bring the entire system down, administrators can alter records without a trace, and stakeholders do not share equal visibility into delivery data. These limitations provide the motivation for exploring decentralised alternatives.
+
+Supply Chain and Logistics Management
+Supply chain management covers the full flow of goods from raw material sourcing to final delivery, involving suppliers, manufacturers, distributors, retailers, and customers. Logistics management is the operational component of this, focused on transportation, inventory, warehousing, and last-mile delivery. In e-commerce, these processes have grown more complex as customers expect real-time tracking and faster fulfilment. Core challenges in traditional supply chains include fragmented data held across multiple organisations, poor traceability when goods change hands, data inconsistencies between parties, and security vulnerabilities in centralised databases. Blockchain technology has emerged as a compelling solution by enabling all participants to share a single, tamper-resistant record.
+
+Blockchain Technology
+Blockchain is a decentralised digital ledger that records transactions across a network of computers in a way that cannot be altered without the consensus of the network. Each record is grouped into a block, cryptographically linked to the one before it, forming an immutable chain. Key properties include decentralisation, where no single party controls the data; immutability, meaning records cannot be changed after they are written; transparency, giving authorised participants shared visibility; and security through cryptographic hashing. In delivery management, blockchain can record every event in a shipment's journey, from creation and dispatch to final receipt, ensuring that all stakeholders work from the same verified data. Challenges around scalability, transaction speed, and integration with existing systems remain active areas of research.
+
+Distributed Ledger Technology (DLT)
+Distributed Ledger Technology is the broader category of systems in which data is replicated and synchronised across multiple locations without a central authority. Blockchain is the most widely known form of DLT, but other structures exist with different consensus mechanisms. For delivery management, DLT provides shared access to a single version of the truth, tamper resistance, consistent data across all parties, and an auditable trail of every action. These properties directly address the transparency and integrity problems found in traditional centralised logistics systems.
+
+Smart Contracts
+Smart contracts are self-executing programs stored on a blockchain that automatically carry out predefined actions when specific conditions are met, without requiring manual coordination or third-party intermediaries. In delivery management, a smart contract can update the delivery status when an agent marks a package as dispatched, close the delivery record when a customer confirms receipt, and trigger notifications or penalties if deadlines are missed. For this project, smart contracts written in Solidity and deployed on the Ethereum network form the automation layer of the system, ensuring that every delivery event is recorded accurately and cannot be modified after the fact.
+
+b. REVIEW OF RELATED WORKS	
+Balfaqih et al. (2023) proposed a blockchain-enabled IoT logistics system for tracking high-value 
+shipments in smart cities. The system integrates intelligent parcels with blockchain smart 
+contracts to automate approval, payment, and real-time shipment monitoring. The study 
+demonstrates improved security, transparency, and privacy using zero-knowledge proofs to 
+protect blockchain identities. Implementation in a single-echelon supply chain showed strong 
+potential for traceability and fraud prevention. However, the model lacks large-scale deployment, 
+multi-network scalability analysis, and cost optimization evaluation.
+
+Aleksieva et al. (2024) explored hierarchical blockchain architectures for logistics management 
+using Hyperledger Fabric. The study demonstrated improved traceability, automation, and 
+tamper-proof record keeping in supply chain processes. Results highlight end-to-end visibility 
+and enhanced security across logistics operations. Despite these benefits, the research lacks real-
+world delivery testing and IoT-based live tracking integration. The study provides architectural 
+guidance but does not address large-scale cost and deployment challenges.
+
+Alqarni et al. (2023) examined blockchain-based smart contracts for improving transparency and 
+trust in logistics networks. The study analyzed deployment and operational performance across 
+terrestrial, maritime, and aerial supply chains. Findings show enhanced traceability, intellectual 
+property protection, and multi-stakeholder coordination. However, the research lacks empirical 
+implementation data and quantitative system performance evaluation. The study provides 
+theoretical support for integrating smart contracts into secure delivery management systems.
+
+Naqvi et al. (2023) designed a blockchain-based supply chain system using Ethereum and IoT-
+enabled smart containers. The system automates payment, shipment validation, and refund
+processes through smart contracts. A decentralized web application and digital wallet interface 
+were developed for stakeholder interaction. Results demonstrate improved shipment monitoring
+and automated enforcement of delivery conditions. However, the focus on cold-chain logistics 
+limits scalability and broader multi-stage delivery applications.
+
+Nwosu et al. (2022) proposed a Blockchain-based IoT system for secure and efficient logistics 
+management. IoT sensors capture logistics data while smart contracts ensure secure 
+communication among stakeholders. Blockchain features like immutability and distributed 
+storage enhance privacy, reduce fraud, and prevent unauthorized access. The system improves 
+transparency, traceability, and operational efficiency across logistics operations. Challenges 
+remain in handling large IoT data volumes and implementing advanced encryption for largescale 
+deployment.
+
+El Midaoui et al. (2021) proposed a decentralized IoT and blockchain-based logistics tracking 
+system to improve supply chain transparency and traceability. The system integrates IoT sensors, 
+RFID/QR technology, and an open data platform to securely capture and share product 
+information among stakeholders. Blockchain ensures immutability and trust while reducing the
+risk of falsification, fraud, and errors in multi-stage supply chains. The approach addresses urban 
+logistics challenges such as congestion, GPS interference, and last-mile delivery, improving 
+operational efficiency and decision-making. Overall, the study demonstrates the potential of 
+combining blockchain and IoT for secure, transparent, and reliable logistics management.
+
+Chinthamu et al. (2025) proposed an energy-efficient, scalable, and privacy-preserving 
+blockchain framework for multi-industry supply chain management to ensure transparency and 
+traceability. The system integrates smart contracts with AI, IoT, and cloud technologies for real-
+time tracking, automated decision-making, and operational efficiency. It uses a hybrid 
+blockchain model incorporating zero-knowledge proofs (ZKP) and decentralized autonomous 
+organizations (DAOs) to enhance governance, security, and compliance with regulations like 
+GDPR and HIPAA. The study also performs a cost-benefit analysis and validates the framework 
+through case studies in pharmaceutical, agricultural, and electronics supply chains. Results 
+demonstrate reduced fraud, improved efficiency, and minimized disruptions, supporting 
+sustainable and resilient logistics operations.
+
+
+ 				VI. SYSTEM FRAMEWORK
+
+System Architecture
+The blockchain-based delivery management system is designed using a three-tier architecture to ensure scalability, security, and maintainability. The system is divided into the frontend layer, backend layer, and blockchain layer.
+Frontend Layer
+The frontend layer provides the user interface for all stakeholders including customers, sellers, and delivery agents. It is developed using React, which allows for dynamic and interactive web pages. The main features of the frontend include:
+•	User registration and login using JWT authentication.
+•	Delivery creation interface for sellers to register packages for shipment.
+•	Delivery status tracking dashboard for both customers and agents.
+•	Notifications and alerts for status changes.
+•	Responsive design to support desktop and mobile users.
+The frontend interacts with the backend through a RESTful API, enabling real-time updates and asynchronous communication with the blockchain ledger.
+Backend Layer
+The backend layer is implemented using NestJS with TypeScript, which is a progressive Node.js framework. This layer handles all application logic, validation, authentication, and communication with the blockchain. Key responsibilities include:
+•	Processing API requests from the frontend.
+•	Executing business logic such as delivery assignments, status updates, and user management.
+•	Interfacing with the blockchain network via Web3.js.
+•	Ensuring data consistency and immutability by interacting with smart contracts.
+•	Implementing role-based access control to differentiate users (customers, sellers, and delivery agents).
+NestJS provides modularity through controllers, services, and modules, allowing the backend to be highly maintainable and testable.
+Blockchain Layer
+The blockchain layer serves as the data storage and verification layer. All delivery transactions are stored on a permissioned Ethereum blockchain network. The layer is responsible for:
+•	Recording each delivery event as a blockchain transaction.
+•	Verifying the authenticity of data through cryptographic hashes.
+•	Providing a tamper-proof, auditable ledger accessible to all participants.
+•	Running smart contracts to automate delivery status updates and enforce business rules.
+The blockchain layer guarantees data integrity, transparency, and trust among all stakeholders.
+
+
+
+
+System Architecture Diagram
+
+ 
+
+ Framework Overview
+The framework for this project integrates web development, backend API, and blockchain technology in a modular fashion. The framework consists of the following components:
+1.	React Frontend:
+o	Components: User login, delivery dashboard, package creation, status updates.
+o	State Management: React Context API or Redux for tracking application state across components.
+o	HTTP Requests: Axios library for sending API requests to the backend.
+2.	NestJS Backend:
+o	Controllers: Handle incoming API requests and route them to the correct service.
+o	Services: Contain the core logic for processing deliveries and interacting with the blockchain.
+o	Modules: Organize related functionality into cohesive units
+o	Database (Optional off-chain): Stores user information and references to blockchain transactions for fast lookup.
+o	Blockchain Integration: Uses Web3.js to read and write transactions from/to Ethereum blockchain.
+3.	Ethereum Blockchain:
+o	Smart Contracts: Written in Solidity, deployed to the Ethereum test network.
+o	Transactions: Record all delivery updates, including dispatch, transit, and proof of delivery.
+o	Distributed Ledger: Every participant maintains a copy of the ledger for transparency.
+4.	Security Layer:
+o	JWT authentication for API endpoints.
+o	Role-based access to differentiate between sellers, agents, and customers.
+o	Encryption of sensitive data before blockchain storage.
+5.	Tools and Dependencies:
+o	Ganache: Local Ethereum network for testing.
+o	Truffle or Hardhat: Smart contract compilation and deployment.
+o	MetaMask: User wallet simulation.
+o	VSCode: IDE for development.
+
+
+
+
+
+
+
+b. SYSTEM METHODOLOGY
+The system development followed a structured step-by-step methodology, integrating Agile principles with blockchain development practices.
+Requirement Analysis
+The first step involved identifying the functional and non-functional requirements of the system:
+•	Functional Requirements:
+1.	Ability to create and track deliveries.
+2.	Record every delivery status update immutably.
+3.	Provide proof-of-delivery confirmation.
+4.	Notify users of delivery events.
+5.	Support multiple user roles (customer, seller, delivery agent).
+•	Non-Functional Requirements:
+1.	Security: Protection against unauthorized access and tampering.
+2.	Scalability: Support multiple simultaneous deliveries.
+3.	Performance: Quick updates and minimal latency in blockchain transactions.
+4.	Usability: Intuitive UI for all users.
+Requirement analysis included stakeholder interviews and review of related literature to identify the common challenges of traditional delivery systems.
+
+System Design
+System design involved architectural planning, data modeling, and flowchart creation:
+•	Flowchart of delivery lifecycle:
+1.	Seller creates a delivery order.
+2.	Delivery agent is assigned.
+3.	Delivery agent marks package as dispatched.
+4.	Package is in transit, status updated periodically.
+5.	Customer confirms receipt.
+6.	Smart contract records all events immutably.
+
+ 
+
+•	ERD (Entity-Relationship Diagram):
+o	Users (customer, seller, agent)
+o	Delivery Orders
+o	Blockchain Transactions
+
+ 
+Implementation Steps
+1.	Frontend Implementation:
+o	Developed using React and TypeScript.
+o	Components for registration, delivery creation, and tracking.
+o	Integrated with NestJS backend via RESTful API.
+2.	Backend Implementation:
+o	Developed using NestJS framework in TypeScript.
+o	Controllers receive API calls and forward them to the respective services.
+o	Services interact with the blockchain using Web3.js.
+o	User authentication and authorization implemented using JWT.
+3.	Smart Contract Development:
+o	Written in Solidity.
+o	Includes events for dispatch, transit, and delivery confirmation.
+o	Deployed on Ethereum test network via Hardhat.
+4.	Blockchain Integration:
+o	Backend communicates with smart contracts using Web3.js.
+o	Transactions are signed by the respective users and submitted to the blockchain.
+o	Transaction hashes are stored off-chain in the backend for faster retrieval.
+5.	Testing:
+o	Unit testing for smart contracts using Mocha/Chai.
+o	API testing for backend endpoints using Postman.
+o	Frontend testing with React Testing Library.
+o	Simulated multiple delivery scenarios to test immutability and correctness.
+
+Data Flow and Transaction Lifecycle
+The data flow is as follows:
+1.	Seller submits a delivery order → Backend validates → Blockchain records.
+2.	Delivery agent updates status → Smart contract triggers event → Ledger updated.
+3.	Customer confirms delivery → Backend fetches confirmation → Blockchain stores proof-of-delivery.
+4.	Any disputes can be resolved by consulting blockchain ledger → immutable and tamper-proof.
+This ensures end-to-end transparency and real-time tracking.
+
+
+
+
+
+
+
+
+
+VII. REFERENCES
+
+Carey, R., Coleman, C. G., & White, T. M. (2024). The impact of blockchain on logistics and supply chain management: A review. Journal of Procurement and Supply Chain Management. 
+Alqarni, M. A., Alkatheiri, M. S., Chauhdary, S. H., & Saleem, S. (2023). Use of blockchain-based smart contracts in logistics and supply chains. Electronics, 12(6), 1340. 
+Weller, F. (2023). Blockchain technology for secure and transparent supply chain management. International Journal of Computing and Engineering. 
+Khan, S. A. R., Piprani, A. Z., & Yu, Z. (2022). Supply chain analytics and post-pandemic performance: mediating role of triple-A supply chain strategies. International Journal of Logistics Management, 33(3), 1050–1067. https://doi.org/10.1108/IJLM-07-2021-0369 
+Sanka, A. I., Irfan, M., Huang, I., & Cheung, R. C. C. (2021). A survey of breakthrough in blockchain technology: Adoptions, applications, challenges and future research. Computer Communications, 169, 179–201. https://doi.org/10.1016/j.comcom.2020.12.028 
+Azevedo, P., Gomes, J., & Romão, M. (2023). Supply chain traceability using blockchain. Operations Management Research, 16, 1359-1381. 
+Zhao, M. (2020). Blockchain technology improves supply chain: A literature review. Academic Journal of Computing & Information Science, 3(4). 
+Jibrin, H. S., Idris, M. K., Babayaro, A., & Ahmed, A. A. (2025). Investigating smart contracts in supply chains: Improving transparency and efficiency using blockchain technology. Journal of Sports Industry & Blockchain Technology. 
+Abeyratne, S. A., & Monfared, R. P. (2016). Blockchain ready manufacturing supply chain using distributed ledger. International Journal of Research in Engineering and Technology, 5(9), 1-10. 
+Sezer, B. B., Topal, S., & Nuriyev, U. (2021). An auditability, transparent, and privacy-preserving framework for supply chain traceability based on blockchain. arXiv Preprint. 
+Hübschke, M., Buss, E., Holschbach, E., et al. (2025). Blockchain in supply chain management: A comprehensive review of success measurement methods. Management Review Quarterly. 
+Fernandez-Carames, T. M., Blanco-Novoa, O., Froiz-Miguez, I., & Fraga-Lamas, P. (2024). Towards an autonomous industry 4.0 warehouse: UAV and blockchain based traceability system. arXiv Preprint. 
+Hossain, M. I., Steigner, T., Hussain, M. I., & Akther, A. (2024). Enhancing data integrity and traceability in industry cyber-physical systems through blockchain. arXiv Preprint. 
+Aleksieva, V., Valchanov, H., & Huliyan, A. (2021). Blockchain-based smart contracts in the supply chain. International Journal on Information Technologies & Security, 13(2), 57–66. 
+Balfaqih, M., Balfagih, Z., Lytras, M. D., Alfawwaz, B. M., & Alotaibi, M. (2023). Intelligent parcel locker system design with blockchain for smart city last-mile logistics. Systems, 11(3), 137. https://doi.org/10.3390/systems11030137 
+Naqvi, S. A. A., Ali, A., & Gondal, T. M. (2023). Blockchain-based smart cold chain management with IoT and Ethereum smart contracts. IEEE Access, 11, 34502–34517. https://doi.org/10.1109/ACCESS.2023.3263636 
+Nwosu, O., Bai, Q., Bhavsar, M., & Bhavsar, P. (2022). Blockchain-based IoT systems for supply chain management: A review. Blockchain: Research and Applications, 3(4), 100067. https://doi.org/10.1016/j.bcra.2022.100067 
+El Midaoui, M., Chafik, S., Lamalem, A., & Krit, S. D. (2021). Review on the applications, security challenges and security mechanisms of IoT in the blockchain distributed system. Journal of Information Assurance & Security, 16(3), 69–78. 
+Chinthamu, N., Ramasubramanian, P., Mahender, K., Kasthuri, P., & Nagalakshmi, M. (2025). Smart automation in intelligent supply chain management for sustainability and transparency using blockchain. Journal of Theoretical and Applied Information Technology, 103(1), 1–14. 

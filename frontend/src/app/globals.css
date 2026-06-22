@@ -1,0 +1,104 @@
+@import "tailwindcss";
+
+/*
+ * Veridel design tokens — a calm, paper-and-ink theme with a single violet
+ * accent, adapted from the Veridel prototype. Light mode only: there is
+ * intentionally no `prefers-color-scheme: dark` override, and no `dark:`
+ * utilities are used anywhere in the app, so the palette stays constant.
+ */
+:root {
+  /* surfaces */
+  --paper: #efece4; /* page background */
+  --surface: #fbfaf6; /* cards and raised surfaces */
+  --surface-2: #f4f1ea; /* subtle filled areas / muted */
+  --ink: #1b1a16; /* primary text */
+  --ink-soft: #6d685c; /* secondary text */
+  --line: #e4dfd4; /* hairline borders */
+  --line-2: #d6d0c2; /* stronger borders */
+
+  /* violet accent (the "chain" colour) */
+  --accent: oklch(0.52 0.15 292);
+  --accent-hover: oklch(0.57 0.15 292);
+  --accent-soft: oklch(0.92 0.04 292);
+  --accent-foreground: #ffffff;
+
+  /* status palette — only these three lifecycle stages carry colour */
+  --disp: oklch(0.74 0.13 72); /* dispatched · amber */
+  --disp-soft: oklch(0.93 0.06 72);
+  --tran: oklch(0.62 0.12 244); /* in transit · blue */
+  --tran-soft: oklch(0.92 0.05 244);
+  --deli: oklch(0.62 0.12 150); /* delivered · green */
+  --deli-soft: oklch(0.92 0.05 150);
+
+  --radius: 0.625rem; /* 10px base; cards round a little more */
+
+  /*
+   * Tokens consumed by the existing primitives. They map onto the Veridel
+   * surfaces above so Card/Input/Button/Table inherit the new look unchanged.
+   */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: var(--surface);
+  --card-foreground: var(--ink);
+  --muted: var(--surface-2);
+  --muted-foreground: var(--ink-soft);
+  --border: var(--line);
+  --brand: var(--accent);
+  --brand-hover: var(--accent-hover);
+  --brand-foreground: var(--accent-foreground);
+}
+
+/* Expose the tokens to Tailwind so `bg-background`, `text-brand`, etc. work. */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-line-2: var(--line-2);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --radius-app: var(--radius);
+  --font-sans: var(--font-plex-sans);
+  --font-mono: var(--font-plex-mono);
+  --font-display: var(--font-space-grotesk);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-plex-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Faint dotted backdrop texture, fading out toward the edges (Veridel). */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(var(--line-2) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+  opacity: 0.5;
+  -webkit-mask-image: radial-gradient(
+    ellipse 80% 70% at 50% 35%,
+    #000,
+    transparent 90%
+  );
+  mask-image: radial-gradient(
+    ellipse 80% 70% at 50% 35%,
+    #000,
+    transparent 90%
+  );
+}
+
+/* Keep app content above the backdrop texture. */
+body > * {
+  position: relative;
+  z-index: 1;
+}
