@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Blockchain Delivery — UI Wireframes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --ink:#34322d;
+  --ink-soft:#6f6b60;
+  --paper:#faf8f1;
+  --board:#f3f0e6;
+  --line:#cdc8b8;
+  --line-2:#ddd8c8;
+  --white:#fffdf7;
+
+  /* status palette (muted for sketch) */
+  --dispatched:oklch(0.84 0.10 76);
+  --transit:oklch(0.78 0.09 244);
+  --delivered:oklch(0.80 0.09 150);
+  --chain:oklch(0.74 0.10 300);
+
+  --accent:oklch(0.74 0.10 300);
+
+  --mono:"Courier New",ui-monospace,monospace;
+  --hand:"Patrick Hand",ui-rounded,sans-serif;
+  --scribble:"Caveat",cursive;
+
+  --chain-detail:1; /* 0 light, 1 moderate, 2 heavy — set by tweaks via classes */
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--hand);
+  color:var(--ink);
+  background:var(--board);
+  -webkit-font-smoothing:antialiased;
+  font-size:16px;
+  line-height:1.35;
+}
+/* faint graph-paper grid */
+body.grid::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:
+    linear-gradient(var(--line-2) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line-2) 1px,transparent 1px);
+  background-size:26px 26px;
+  opacity:.5;
+}
+.wrap{position:relative;z-index:1;max-width:1280px;margin:0 auto;padding:34px 28px 120px;}
+
+/* ---------- header ---------- */
+header.page{margin-bottom:18px;}
+.kicker{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);}
+h1.title{font-family:var(--scribble);font-weight:700;font-size:52px;line-height:.96;margin:.12em 0 .1em;letter-spacing:.5px;}
+.subtitle{font-size:18px;color:var(--ink-soft);max-width:62ch;}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:14px;font-family:var(--mono);font-size:12px;color:var(--ink-soft);}
+.meta-row span{display:inline-flex;align-items:center;gap:6px;}
+.meta-row b{color:var(--ink);font-weight:400;}
+
+/* ---------- legend ---------- */
+.legend{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;margin-top:18px;
+  border:2px dashed var(--line);border-radius:14px;padding:12px 16px;background:var(--paper);}
+.legend .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);}
+.swatch{display:inline-flex;align-items:center;gap:7px;font-size:15px;}
+.dot{width:16px;height:16px;border-radius:5px 8px 6px 9px;border:1.5px solid var(--ink);}
+.dot.dispatched{background:var(--dispatched);}
+.dot.transit{background:var(--transit);}
+.dot.delivered{background:var(--delivered);}
+.dot.chain{background:var(--chain);}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 8px;border-bottom:2px solid var(--line);padding-bottom:0;}
+.tab{
+  font-family:var(--hand);font-size:18px;cursor:pointer;
+  background:var(--board);border:2px solid var(--line);border-bottom:none;
+  border-radius:12px 12px 0 0;padding:9px 16px 11px;color:var(--ink-soft);
+  position:relative;top:2px;transition:.12s;
+}
+.tab .n{font-family:var(--mono);font-size:11px;display:block;letter-spacing:.1em;opacity:.7;}
+.tab:hover{color:var(--ink);}
+.tab.active{background:var(--paper);color:var(--ink);border-color:var(--ink);top:2px;box-shadow:0 -2px 0 var(--accent) inset;}
+
+.panel{display:none;animation:fade .25s ease;}
+.panel.active{display:block;}
+@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+
+/* ---------- pattern intro ---------- */
+.intro{display:flex;flex-wrap:wrap;gap:18px 30px;align-items:flex-start;margin:22px 0 8px;}
+.intro .big{font-family:var(--scribble);font-size:34px;line-height:1;flex:0 0 auto;}
+.intro .desc{max-width:54ch;color:var(--ink-soft);font-size:16.5px;}
+.intro .desc b{color:var(--ink);font-weight:400;}
+.tradeoffs{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
+.pro,.con{font-family:var(--mono);font-size:12px;padding:5px 10px;border-radius:8px;border:1.5px solid var(--line);}
+.pro{background:color-mix(in oklab,var(--delivered) 22%,var(--paper));}
+.con{background:color-mix(in oklab,var(--dispatched) 22%,var(--paper));}
+
+/* ---------- board ---------- */
+.board{display:flex;flex-wrap:wrap;gap:30px 26px;align-items:flex-start;margin-top:22px;}
+.flow{display:flex;align-items:center;gap:6px;align-self:center;font-family:var(--scribble);font-size:30px;color:var(--ink-soft);}
+
+.frame-wrap{display:flex;flex-direction:column;gap:8px;}
+.frame-cap{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);}
+.frame-cap b{color:var(--ink);font-weight:400;text-transform:none;font-family:var(--hand);font-size:15px;letter-spacing:0;display:block;}
+
+/* ---------- screen primitives ---------- */
+.browser,.phone{background:var(--white);border:2.5px solid var(--ink);position:relative;}
+.browser{width:560px;border-radius:10px;box-shadow:3px 4px 0 rgba(52,50,45,.10);}
+body.jitter .browser{transform:rotate(-.5deg);}
+body.jitter .frame-wrap:nth-child(even) .browser{transform:rotate(.5deg);}
+.chrome{display:flex;align-items:center;gap:8px;padding:9px 12px;border-bottom:2px solid var(--line);background:var(--paper);border-radius:8px 8px 0 0;}
+.lights{display:flex;gap:5px;}
+.lights i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--ink);display:block;}
+.url{flex:1;font-family:var(--mono);font-size:11px;color:var(--ink-soft);background:var(--white);border:1.5px solid var(--line);border-radius:7px;padding:3px 9px;}
+.viewport{padding:14px;min-height:300px;}
+
+.phone{width:268px;border-radius:30px;box-shadow:3px 4px 0 rgba(52,50,45,.10);padding:9px;}
+body.jitter .phone{transform:rotate(.5deg);}
+body.jitter .frame-wrap:nth-child(even) .phone{transform:rotate(-.6deg);}
+.phone .notch{width:90px;height:7px;background:var(--ink);border-radius:6px;margin:2px auto 7px;}
+.screen{border:2px solid var(--line);border-radius:20px;background:var(--white);min-height:480px;display:flex;flex-direction:column;overflow:hidden;}
+.screen .body{padding:13px;flex:1;display:flex;flex-direction:column;gap:10px;}
+
+/* generic wireframe atoms */
+.h{height:13px;background:var(--ink);border-radius:3px;opacity:.86;}
+.t{height:9px;background:var(--line);border-radius:3px;}
+.t.d{background:var(--ink-soft);opacity:.5;}
+.stack{display:flex;flex-direction:column;}
+.stack.g4>*+*{margin-top:4px;}
+.stack.g6>*+*{margin-top:6px;}
+.stack.g8>*+*{margin-top:8px;}
+.row{display:flex;align-items:center;gap:8px;}
+.row.wrap{flex-wrap:wrap;}
+.row.between{justify-content:space-between;}
+.col{display:flex;flex-direction:column;gap:8px;}
+.fill{flex:1;}
+.center{align-items:center;justify-content:center;text-align:center;}
+
+.box{border:2px solid var(--line);border-radius:9px;background:var(--paper);padding:10px;}
+.box.solid{background:var(--white);}
+.label{font-size:14px;}
+.label.sm{font-size:12.5px;color:var(--ink-soft);}
+.label.hd{font-size:17px;}
+.muted{color:var(--ink-soft);}
+
+.btn{font-family:var(--hand);font-size:14px;border:2px solid var(--ink);border-radius:9px;
+  padding:6px 12px;background:var(--white);display:inline-flex;align-items:center;gap:6px;line-height:1;}
+.btn.cta{background:var(--accent);color:var(--ink);box-shadow:2px 2px 0 var(--ink);}
+.btn.ghost{border-style:dashed;color:var(--ink-soft);}
+.btn.sm{font-size:12.5px;padding:4px 9px;}
+.btn.block{display:flex;justify-content:center;width:100%;}
+
+.input{border:2px solid var(--line);border-radius:8px;padding:7px 10px;background:var(--white);
+  font-family:var(--mono);font-size:12px;color:var(--ink-soft);}
+.input.block{display:block;width:100%;}
+
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;
+  padding:3px 8px;border-radius:20px;border:1.5px solid var(--ink);display:inline-flex;align-items:center;gap:5px;}
+.chip.dispatched{background:var(--dispatched);}
+.chip.transit{background:var(--transit);}
+.chip.delivered{background:var(--delivered);}
+.chip.chain{background:var(--chain);}
+.chip .bead{width:7px;height:7px;border-radius:50%;background:var(--ink);}
+
+/* hashes / chain detail */
+.hash{font-family:var(--mono);font-size:10px;color:var(--ink-soft);
+  background:var(--paper);border:1.5px dashed var(--line);border-radius:6px;padding:2px 7px;
+  display:inline-flex;align-items:center;gap:5px;overflow:hidden;white-space:nowrap;}
+.hash::before{content:"⬡";color:var(--chain);font-size:11px;}
+.verify{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;
+  color:var(--ink);background:color-mix(in oklab,var(--chain) 26%,var(--white));
+  border:1.5px solid var(--ink);border-radius:7px;padding:3px 8px;}
+.verify::before{content:"✓⬡";letter-spacing:-1px;}
+/* chain-detail visibility */
+body.detail-light .chain-only{display:none !important;}
+body.detail-heavy .chain-heavy{display:flex;}
+.chain-heavy{display:none;}
+
+/* placeholder image */
+.ph{
+  border:2px solid var(--line);border-radius:9px;position:relative;overflow:hidden;
+  background:
+    repeating-linear-gradient(45deg,transparent,transparent 7px,var(--line-2) 7px,var(--line-2) 8px),
+    var(--paper);
+  display:flex;align-items:center;justify-content:center;color:var(--ink-soft);
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:6px;
+}
+
+/* nav shells */
+.sidebar{width:128px;border:2px solid var(--line);border-radius:9px;background:var(--paper);padding:10px 9px;display:flex;flex-direction:column;gap:9px;flex:0 0 auto;}
+.navi{font-size:13.5px;display:flex;align-items:center;gap:7px;padding:5px 7px;border-radius:7px;color:var(--ink-soft);}
+.navi .ic{width:14px;height:14px;border:1.5px solid var(--ink-soft);border-radius:4px;flex:0 0 auto;}
+.navi.on{background:var(--white);border:1.5px solid var(--ink);color:var(--ink);box-shadow:1.5px 1.5px 0 var(--accent);}
+.navi.on .ic{border-color:var(--ink);background:var(--accent);}
+
+.topnav{display:flex;align-items:center;gap:5px;border-bottom:2px solid var(--line);padding-bottom:9px;margin-bottom:11px;flex-wrap:wrap;}
+.toptab{font-size:13.5px;padding:5px 10px;border-radius:8px 8px 0 0;color:var(--ink-soft);border:1.5px solid transparent;}
+.toptab.on{color:var(--ink);border-color:var(--line);border-bottom-color:var(--white);background:var(--white);position:relative;top:2px;box-shadow:0 -2px 0 var(--accent) inset;}
+
+.bottomnav{display:flex;justify-content:space-around;align-items:center;border-top:2px solid var(--line);
+  padding:9px 6px 4px;background:var(--paper);}
+.bnav{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;color:var(--ink-soft);}
+.bnav .ic{width:18px;height:18px;border:1.5px solid var(--ink-soft);border-radius:5px;}
+.bnav.on{color:var(--ink);}
+.bnav.on .ic{border-color:var(--ink);background:var(--accent);}
+
+.appbar{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-bottom:2px solid var(--line);background:var(--paper);}
+.appbar .ttl{font-size:16px;}
+.icbtn{width:26px;height:26px;border:1.5px solid var(--ink);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;background:var(--white);}
+
+/* timeline */
+.tl{display:flex;flex-direction:column;gap:0;position:relative;padding-left:6px;}
+.tl .step{display:flex;gap:10px;position:relative;padding:0 0 14px;}
+.tl .step:last-child{padding-bottom:0;}
+.tl .node{width:18px;height:18px;border-radius:50%;border:2px solid var(--ink);background:var(--white);flex:0 0 auto;z-index:1;}
+.tl .step.done .node{background:var(--delivered);}
+.tl .step.now .node{background:var(--transit);box-shadow:0 0 0 3px color-mix(in oklab,var(--transit) 40%,transparent);}
+.tl .step.next .node{background:var(--paper);border-style:dashed;}
+.tl .step::before{content:"";position:absolute;left:8px;top:18px;bottom:0;width:2px;background:var(--line);}
+.tl .step:last-child::before{display:none;}
+.tl .meta{display:flex;flex-direction:column;gap:3px;padding-top:0;}
+.tl .meta .when{font-family:var(--mono);font-size:10px;color:var(--ink-soft);}
+
+/* card lists */
+.dcard{border:2px solid var(--line);border-radius:10px;background:var(--white);padding:10px 11px;display:flex;flex-direction:column;gap:7px;}
+.dcard .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+
+/* map placeholder */
+.map{height:118px;}
+
+/* annotations */
+.note{font-family:var(--scribble);font-size:20px;color:var(--accent);line-height:1.05;display:flex;gap:6px;align-items:flex-start;max-width:230px;}
+.note::before{content:"↳";font-size:22px;line-height:1;}
+.note.free{color:var(--ink-soft);}
+
+.section-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+  margin:30px 0 4px;display:flex;align-items:center;gap:10px;}
+.section-label::after{content:"";flex:1;height:2px;background:var(--line);border-radius:2px;}
+
+.role-pill{font-family:var(--mono);font-size:11px;border:1.5px solid var(--ink);border-radius:20px;padding:2px 9px;background:var(--white);}
+
+footer.page{margin-top:60px;border-top:2px dashed var(--line);padding-top:18px;color:var(--ink-soft);font-size:13px;font-family:var(--mono);}
+
+/* hub tiles */
+.hub{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.tile{border:2px solid var(--ink);border-radius:12px;background:var(--white);padding:12px;display:flex;flex-direction:column;gap:8px;box-shadow:2px 2px 0 rgba(52,50,45,.08);}
+.tile .ic{width:24px;height:24px;border:2px solid var(--ink);border-radius:7px;background:var(--accent);}
+
+@media(max-width:600px){
+  .browser{width:100%;max-width:340px;}
+  h1.title{font-size:40px;}
+}
+</style>
+</head>
+<body class="grid jitter detail-moderate">
+<div class="wrap">
+
+<header class="page">
+  <div class="kicker">Seminar Defence · Proposed UI · Low-fi Wireframes</div>
+  <h1 class="title">Blockchain Delivery Management — UI</h1>
+  <p class="subtitle">Rough wireframes mapping the design space for a decentralised delivery system. Three roles, seven core screens, explored through <b>four different navigation patterns</b>. Structure &amp; flow first — not final pixels.</p>
+  <div class="meta-row">
+    <span><b>Roles:</b> Customer · Seller · Delivery Agent</span>
+    <span><b>Stack ref:</b> React · NestJS · Ethereum / Solidity</span>
+    <span><b>Lifecycle:</b> create → assign → dispatch → transit → confirm</span>
+  </div>
+  <div class="legend">
+    <span class="lbl">Status palette</span>
+    <span class="swatch"><span class="dot dispatched"></span>Dispatched</span>
+    <span class="swatch"><span class="dot transit"></span>In transit</span>
+    <span class="swatch"><span class="dot delivered"></span>Delivered</span>
+    <span class="swatch"><span class="dot chain"></span>On-chain / verified</span>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab active" data-tab="a"><span class="n">PATTERN A</span>Desktop · Sidebar</button>
+  <button class="tab" data-tab="b"><span class="n">PATTERN B</span>Desktop · Top-Tabs</button>
+  <button class="tab" data-tab="c"><span class="n">PATTERN C</span>Mobile · Bottom-Nav</button>
+  <button class="tab" data-tab="d"><span class="n">PATTERN D</span>Adaptive · Role Hub</button>
+</nav>
+
+<!-- ============================ PATTERN A ============================ -->
+<section class="panel active" data-panel="a">
+  <div class="intro">
+    <div class="big">A · Persistent Sidebar</div>
+    <div class="desc">
+      <b>For:</b> Sellers &amp; operators on desktop who live in the app all day.<br/>
+      A fixed left rail holds every destination; a role badge sits up top. Best for power users managing many deliveries, where the on-chain <b>ledger</b> deserves a permanent home in the nav.
+      <div class="tradeoffs">
+        <span class="pro">+ everything one click away</span>
+        <span class="pro">+ room for ledger + filters</span>
+        <span class="con">– heavy for mobile / casual customers</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="board">
+    <!-- Login -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 01 · <b>Login / Register</b></div>
+      <div class="browser">
+        <div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">app.chaindeliver.io/login</span></div>
+        <div class="viewport center" style="display:flex;flex-direction:column;gap:14px;min-height:300px;">
+          <div class="stack g4 center"><div class="h" style="width:160px;"></div><div class="t" style="width:200px;"></div></div>
+          <div class="box solid" style="width:280px;display:flex;flex-direction:column;gap:10px;">
+            <div class="label sm">Email</div><div class="input block"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d4bab5b9b194b1b9b5bdb8fab7bbb9">[email&#160;protected]</a></div>
+            <div class="label sm">Password</div><div class="input block">••••••••</div>
+            <div class="row between" style="margin-top:2px;">
+              <span class="label sm">Role: Customer / Seller / Agent</span>
+            </div>
+            <div class="btn cta block">Sign in</div>
+            <div class="row center"><span class="verify chain-only">JWT session · wallet linked</span></div>
+          </div>
+          <div class="label sm muted">New here? Create account →</div>
+        </div>
+      </div>
+      <div class="note">Role chosen at sign-in drives the whole nav</div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- Seller dashboard -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 02 · <b>Seller Dashboard</b></div>
+      <div class="browser">
+        <div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">app.chaindeliver.io/deliveries</span></div>
+        <div class="viewport">
+          <div class="row" style="align-items:stretch;gap:12px;">
+            <div class="sidebar">
+              <div class="row" style="gap:6px;"><span class="role-pill">SELLER</span></div>
+              <div class="navi on"><span class="ic"></span>Deliveries</div>
+              <div class="navi"><span class="ic"></span>New delivery</div>
+              <div class="navi"><span class="ic"></span>Tracking</div>
+              <div class="navi chain-only"><span class="ic"></span>Ledger</div>
+              <div class="navi"><span class="ic"></span>Notifications</div>
+              <div class="navi"><span class="ic"></span>Settings</div>
+            </div>
+            <div class="fill col">
+              <div class="row between"><div class="h" style="width:130px;"></div><div class="btn cta sm">+ New delivery</div></div>
+              <div class="row wrap" style="gap:6px;"><span class="chip">All</span><span class="chip dispatched"><span class="bead"></span>Dispatched 4</span><span class="chip transit"><span class="bead"></span>Transit 7</span><span class="chip delivered"><span class="bead"></span>Delivered 22</span></div>
+              <div class="dcard">
+                <div class="top"><div class="stack g4"><div class="label">#DLV-2041 · Lagos → Ibadan</div><div class="t" style="width:120px;"></div></div><span class="chip transit"><span class="bead"></span>Transit</span></div>
+                <div class="row between"><span class="hash chain-only">0x9f2c…a18b</span><span class="label sm muted">Agent: M. Bello</span></div>
+              </div>
+              <div class="dcard">
+                <div class="top"><div class="stack g4"><div class="label">#DLV-2039 · Abuja → Jos</div><div class="t" style="width:100px;"></div></div><span class="chip delivered"><span class="bead"></span>Delivered</span></div>
+                <div class="row between"><span class="verify chain-only">verified</span><span class="label sm muted">Confirmed 2h ago</span></div>
+              </div>
+              <div class="dcard">
+                <div class="top"><div class="stack g4"><div class="label">#DLV-2044 · Lagos → Kano</div><div class="t" style="width:90px;"></div></div><span class="chip dispatched"><span class="bead"></span>Dispatched</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- Create delivery -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 03 · <b>Create Delivery (Seller)</b></div>
+      <div class="browser">
+        <div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">app.chaindeliver.io/new</span></div>
+        <div class="viewport">
+          <div class="row" style="align-items:stretch;gap:12px;">
+            <div class="sidebar">
+              <div class="row"><span class="role-pill">SELLER</span></div>
+              <div class="navi"><span class="ic"></span>Deliveries</div>
+              <div class="navi on"><span class="ic"></span>New delivery</div>
+              <div class="navi"><span class="ic"></span>Tracking</div>
+              <div class="navi chain-only"><span class="ic"></span>Ledger</div>
+            </div>
+            <div class="fill col">
+              <div class="h" style="width:150px;"></div>
+              <div class="row" style="gap:10px;">
+                <div class="col fill"><div class="label sm">Pickup</div><div class="input block">Warehouse, Lagos</div></div>
+                <div class="col fill"><div class="label sm">Drop-off</div><div class="input block">Recipient address</div></div>
+              </div>
+              <div class="col"><div class="label sm">Package / contents</div><div class="input block">Electronics · 2.4kg</div></div>
+              <div class="row" style="gap:10px;">
+                <div class="col fill"><div class="label sm">Recipient</div><div class="input block">Name · phone</div></div>
+                <div class="col fill"><div class="label sm">Assign agent</div><div class="input block">▾ choose agent</div></div>
+              </div>
+              <div class="box" style="border-style:dashed;"><div class="row between"><span class="label sm chain-only">⬡ Will mint a delivery record on-chain</span><span class="label sm muted">est. gas shown</span></div></div>
+              <div class="btn cta block">Create &amp; record on ledger</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="note">Create = the first immutable block in this delivery's chain</div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- Ledger -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 04 · <b>Blockchain Ledger</b></div>
+      <div class="browser">
+        <div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">app.chaindeliver.io/ledger/DLV-2041</span></div>
+        <div class="viewport">
+          <div class="row between"><div class="h" style="width:160px;"></div><span class="verify">chain intact</span></div>
+          <div class="t" style="width:220px;margin:6px 0 10px;"></div>
+          <div class="tl">
+            <div class="step done"><div class="node"></div><div class="meta"><span class="label">Created · #DLV-2041</span><span class="when">Block 18,204,551 · 0x9f2c…a18b</span></div></div>
+            <div class="step done"><div class="node"></div><div class="meta"><span class="label">Agent assigned · M. Bello</span><span class="when">Block 18,204,552 · 0x71de…04c1</span></div></div>
+            <div class="step done"><div class="node"></div><div class="meta"><span class="label">Dispatched</span><span class="when">Block 18,204,889 · 0x33aa…9b20</span></div></div>
+            <div class="step now"><div class="node"></div><div class="meta"><span class="label">In transit (current)</span><span class="when">Block 18,205,010 · 0xbe45…7f8a</span></div></div>
+            <div class="step next"><div class="node"></div><div class="meta"><span class="label muted">Awaiting customer confirmation</span><span class="when">— pending —</span></div></div>
+          </div>
+          <div class="box" style="margin-top:6px;"><div class="row between"><span class="label sm">Each row = one signed transaction. Tap to view on explorer.</span><span class="btn ghost sm chain-only">open explorer ↗</span></div></div>
+        </div>
+      </div>
+      <div class="note free">Same ledger is read-only for customers, write-restricted by role</div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- Live tracking -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 05 · <b>Live Tracking</b></div>
+      <div class="browser">
+        <div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">app.chaindeliver.io/track/DLV-2041</span></div>
+        <div class="viewport">
+          <div class="row" style="gap:12px;align-items:stretch;">
+            <div class="col fill">
+              <div class="row between"><div class="h" style="width:120px;"></div><span class="chip transit"><span class="bead"></span>In transit</span></div>
+              <div class="ph map">map view · live agent location</div>
+              <div class="row wrap" style="gap:6px;"><span class="label sm">ETA 14:20</span><span class="label sm muted">·</span><span class="label sm">3.2 km away</span></div>
+            </div>
+            <div class="col" style="width:180px;">
+              <div class="label sm">Status history</div>
+              <div class="tl">
+                <div class="step done"><div class="node"></div><div class="meta"><span class="label">Dispatched</span><span class="when">09:02</span></div></div>
+                <div class="step done"><div class="node"></div><div class="meta"><span class="label">Hub scan</span><span class="when">11:40</span></div></div>
+                <div class="step now"><div class="node"></div><div class="meta"><span class="label">Out for delivery</span><span class="when">13:05</span></div></div>
+              </div>
+              <span class="hash chain-only">live updates → ledger</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PATTERN B ============================ -->
+<section class="panel" data-panel="b">
+  <div class="intro">
+    <div class="big">B · Top Tab Bar</div>
+    <div class="desc">
+      <b>For:</b> A lean, focused desktop console — fewer destinations, kept horizontal.<br/>
+      Primary sections live as tabs across the top; content fills the width below. Reads like a familiar web app and keeps <b>notifications</b> + <b>tracking</b> a single jump away without a heavy rail.
+      <div class="tradeoffs">
+        <span class="pro">+ simple, scannable, full-width content</span>
+        <span class="pro">+ low nav overhead</span>
+        <span class="con">– limited room as destinations grow</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="board">
+    <!-- Dashboard top tabs -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 02 · <b>Dashboard (Top-Tabs)</b></div>
+      <div class="browser">
+        <div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">app.chaindeliver.io</span></div>
+        <div class="viewport">
+          <div class="row between" style="margin-bottom:4px;"><div class="h" style="width:120px;"></div><span class="role-pill">SELLER</span></div>
+          <div class="topnav">
+            <span class="toptab on">Deliveries</span>
+            <span class="toptab">Create</span>
+            <span class="toptab">Tracking</span>
+            <span class="toptab chain-only">Ledger</span>
+            <span class="toptab">Notifications •</span>
+          </div>
+          <div class="row wrap" style="gap:6px;margin-bottom:8px;"><span class="chip">All 33</span><span class="chip dispatched"><span class="bead"></span>4</span><span class="chip transit"><span class="bead"></span>7</span><span class="chip delivered"><span class="bead"></span>22</span><span class="input" style="margin-left:auto;">⌕ search #DLV</span></div>
+          <div class="col">
+            <div class="dcard"><div class="top"><div class="label">#DLV-2041 · Lagos → Ibadan</div><span class="chip transit"><span class="bead"></span>Transit</span></div><div class="row between"><span class="hash chain-only">0x9f2c…a18b</span><span class="label sm muted">M. Bello · ETA 14:20</span></div></div>
+            <div class="dcard"><div class="top"><div class="label">#DLV-2039 · Abuja → Jos</div><span class="chip delivered"><span class="bead"></span>Delivered</span></div><div class="row between"><span class="verify chain-only">verified</span><span class="label sm muted">2h ago</span></div></div>
+            <div class="dcard"><div class="top"><div class="label">#DLV-2044 · Lagos → Kano</div><span class="chip dispatched"><span class="bead"></span>Dispatched</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="note">Tab bar scales down to a "≡ more" menu on narrow widths</div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- Tracking detail -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 05 · <b>Tracking Detail</b></div>
+      <div class="browser">
+        <div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">app.chaindeliver.io/tracking</span></div>
+        <div class="viewport">
+          <div class="topnav">
+            <span class="toptab">Deliveries</span><span class="toptab">Create</span>
+            <span class="toptab on">Tracking</span><span class="toptab chain-only">Ledger</span><span class="toptab">Notifications</span>
+          </div>
+          <div class="row between"><div class="label hd">#DLV-2041</div><span class="chip transit"><span class="bead"></span>In transit</span></div>
+          <div class="ph map" style="margin:8px 0;">map view · route + live pin</div>
+          <div class="row" style="gap:14px;align-items:flex-start;">
+            <div class="tl fill">
+              <div class="step done"><div class="node"></div><div class="meta"><span class="label">Dispatched</span><span class="when">09:02 · 0x33aa…</span></div></div>
+              <div class="step done"><div class="node"></div><div class="meta"><span class="label">Hub scan, Ibadan</span><span class="when">11:40 · 0x5cd1…</span></div></div>
+              <div class="step now"><div class="node"></div><div class="meta"><span class="label">Out for delivery</span><span class="when">13:05 · 0xbe45…</span></div></div>
+              <div class="step next"><div class="node"></div><div class="meta"><span class="label muted">Delivered</span><span class="when">pending</span></div></div>
+            </div>
+            <div class="col" style="width:150px;"><div class="box"><div class="stack g6"><span class="label sm">ETA</span><span class="label">14:20</span><span class="label sm muted">3.2 km away</span></div></div><span class="verify chain-only">all steps signed</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- Notifications -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 07 · <b>Notifications</b></div>
+      <div class="browser">
+        <div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">app.chaindeliver.io/notifications</span></div>
+        <div class="viewport">
+          <div class="topnav">
+            <span class="toptab">Deliveries</span><span class="toptab">Create</span>
+            <span class="toptab">Tracking</span><span class="toptab chain-only">Ledger</span><span class="toptab on">Notifications</span>
+          </div>
+          <div class="row between"><div class="h" style="width:110px;"></div><span class="btn ghost sm">mark all read</span></div>
+          <div class="col" style="margin-top:8px;">
+            <div class="dcard"><div class="row" style="gap:8px;"><span class="chip delivered"><span class="bead"></span></span><div class="stack g4 fill"><span class="label">#DLV-2039 confirmed received</span><span class="t" style="width:130px;"></span></div><span class="label sm muted">2h</span></div></div>
+            <div class="dcard"><div class="row" style="gap:8px;"><span class="chip transit"><span class="bead"></span></span><div class="stack g4 fill"><span class="label">#DLV-2041 out for delivery</span><span class="t" style="width:110px;"></span></div><span class="label sm muted">1h</span></div></div>
+            <div class="dcard"><div class="row" style="gap:8px;"><span class="chip chain"><span class="bead"></span></span><div class="stack g4 fill"><span class="label chain-only">New block confirmed for #DLV-2044</span><span class="t" style="width:120px;"></span></div><span class="label sm muted">12m</span></div></div>
+          </div>
+          <div class="note free" style="margin-top:10px;">Each alert is fired by a smart-contract event</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PATTERN C ============================ -->
+<section class="panel" data-panel="c">
+  <div class="intro">
+    <div class="big">C · Mobile Bottom-Nav</div>
+    <div class="desc">
+      <b>For:</b> Customers tracking a package and agents working in the field — thumb-first.<br/>
+      A fixed bottom bar with 4–5 destinations; one screen at a time, big tap targets. This is where <b>proof-of-delivery confirmation</b> and <b>live tracking</b> truly belong.
+      <div class="tradeoffs">
+        <span class="pro">+ thumb-reachable, native feel</span>
+        <span class="pro">+ ideal for customers & agents</span>
+        <span class="con">– cramped for seller bulk ops</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="board">
+    <!-- Customer dashboard -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 02 · <b>Customer Home</b> <span class="role-pill">CUSTOMER</span></div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="appbar"><span class="ttl">My deliveries</span><span class="icbtn">⌕</span></div>
+          <div class="body">
+            <div class="dcard"><div class="top"><div class="stack g4"><span class="label">#DLV-2041</span><span class="t" style="width:90px;"></span></div><span class="chip transit"><span class="bead"></span>Transit</span></div><div class="row between"><span class="label sm muted">ETA 14:20</span><span class="btn sm">Track</span></div></div>
+            <div class="dcard"><div class="top"><div class="stack g4"><span class="label">#DLV-2030</span><span class="t" style="width:80px;"></span></div><span class="chip dispatched"><span class="bead"></span>Dispatched</span></div></div>
+            <div class="dcard"><div class="top"><div class="stack g4"><span class="label">#DLV-1998</span><span class="t" style="width:70px;"></span></div><span class="chip delivered"><span class="bead"></span>Delivered</span></div><span class="verify chain-only">verified on-chain</span></div>
+          </div>
+          <div class="bottomnav">
+            <div class="bnav on"><span class="ic"></span>Home</div>
+            <div class="bnav"><span class="ic"></span>Track</div>
+            <div class="bnav chain-only"><span class="ic"></span>Ledger</div>
+            <div class="bnav"><span class="ic"></span>Alerts</div>
+            <div class="bnav"><span class="ic"></span>Me</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- tracking timeline mobile -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 05 · <b>Live Tracking</b></div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="appbar"><span class="icbtn">‹</span><span class="ttl">#DLV-2041</span><span class="icbtn">⬡</span></div>
+          <div class="body">
+            <div class="ph map">map · live pin</div>
+            <div class="row between"><span class="chip transit"><span class="bead"></span>Out for delivery</span><span class="label sm">ETA 14:20</span></div>
+            <div class="tl">
+              <div class="step done"><div class="node"></div><div class="meta"><span class="label">Dispatched</span><span class="when">09:02</span></div></div>
+              <div class="step done"><div class="node"></div><div class="meta"><span class="label">Hub scan</span><span class="when">11:40</span></div></div>
+              <div class="step now"><div class="node"></div><div class="meta"><span class="label">Out for delivery</span><span class="when">13:05</span></div></div>
+              <div class="step next"><div class="node"></div><div class="meta"><span class="label muted">Delivered</span><span class="when">soon</span></div></div>
+            </div>
+            <span class="hash chain-only">tap any step → view on chain</span>
+          </div>
+          <div class="bottomnav">
+            <div class="bnav"><span class="ic"></span>Home</div><div class="bnav on"><span class="ic"></span>Track</div>
+            <div class="bnav chain-only"><span class="ic"></span>Ledger</div><div class="bnav"><span class="ic"></span>Alerts</div><div class="bnav"><span class="ic"></span>Me</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- proof of delivery -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 06 · <b>Confirm Receipt</b></div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="appbar"><span class="icbtn">‹</span><span class="ttl">Confirm delivery</span><span style="width:26px;"></span></div>
+          <div class="body center" style="justify-content:flex-start;gap:14px;">
+            <div class="ph" style="height:90px;width:100%;">agent + package photo</div>
+            <div class="stack g6 center"><span class="label hd">#DLV-2041 arrived?</span><span class="label sm muted">Confirm to close this delivery on the ledger</span></div>
+            <div class="box solid" style="width:100%;"><div class="row between"><span class="label sm">Agent</span><span class="label">M. Bello</span></div><div class="row between"><span class="label sm">Code</span><span class="hash">4471</span></div></div>
+            <div class="ph" style="height:64px;width:100%;">signature / OTP scan</div>
+            <div class="btn cta block">✓ Confirm receipt</div>
+            <span class="verify chain-only">writes proof-of-delivery block, signed by you</span>
+            <span class="btn ghost block">Report a problem</span>
+          </div>
+          <div class="bottomnav">
+            <div class="bnav"><span class="ic"></span>Home</div><div class="bnav on"><span class="ic"></span>Track</div>
+            <div class="bnav chain-only"><span class="ic"></span>Ledger</div><div class="bnav"><span class="ic"></span>Alerts</div><div class="bnav"><span class="ic"></span>Me</div>
+          </div>
+        </div>
+      </div>
+      <div class="note">Customer's signature = the final, disputable-proof block</div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- agent update -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Agent view · <b>Update Status</b> <span class="role-pill">AGENT</span></div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="appbar"><span class="ttl">My route · 5 stops</span><span class="icbtn">⬡</span></div>
+          <div class="body">
+            <div class="dcard" style="border-color:var(--ink);">
+              <div class="top"><div class="stack g4"><span class="label">#DLV-2041 · stop 3</span><span class="t" style="width:90px;"></span></div><span class="chip transit"><span class="bead"></span>Active</span></div>
+              <div class="ph" style="height:40px;">scan parcel QR</div>
+              <div class="row" style="gap:6px;">
+                <span class="btn sm">Picked up</span><span class="btn cta sm">Dispatched</span><span class="btn sm">Delivered</span>
+              </div>
+              <span class="verify chain-only">each tap signs a tx from your wallet</span>
+            </div>
+            <div class="dcard"><div class="top"><div class="label sm">#DLV-2052 · stop 4</div><span class="chip dispatched"><span class="bead"></span>Next</span></div></div>
+            <div class="dcard"><div class="top"><div class="label sm">#DLV-2061 · stop 5</div><span class="chip dispatched"><span class="bead"></span>Queued</span></div></div>
+          </div>
+          <div class="bottomnav">
+            <div class="bnav on"><span class="ic"></span>Route</div><div class="bnav"><span class="ic"></span>Scan</div>
+            <div class="bnav chain-only"><span class="ic"></span>Ledger</div><div class="bnav"><span class="ic"></span>Alerts</div><div class="bnav"><span class="ic"></span>Me</div>
+          </div>
+        </div>
+      </div>
+      <div class="note free">Agent's role on the ledger closes once the customer confirms</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ PATTERN D ============================ -->
+<section class="panel" data-panel="d">
+  <div class="intro">
+    <div class="big">D · Role Hub / Launcher</div>
+    <div class="desc">
+      <b>For:</b> One adaptive entry point that reshapes itself per role.<br/>
+      A home "hub" of large action tiles tailored to who signed in; everything else is a focused screen you drill into and back out of. Lowest learning curve across all three roles — the nav <i>is</i> the task list.
+      <div class="tradeoffs">
+        <span class="pro">+ one design serves all roles</span>
+        <span class="pro">+ gentle for first-time users</span>
+        <span class="con">– more taps to reach deep screens</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="board">
+    <!-- Hub -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 02 · <b>Role Hub</b> <span class="role-pill">SELLER</span></div>
+      <div class="browser" style="width:420px;">
+        <div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">app.chaindeliver.io/home</span></div>
+        <div class="viewport">
+          <div class="row between"><div class="stack g4"><div class="h" style="width:120px;"></div><div class="t" style="width:160px;"></div></div><span class="icbtn">⬡</span></div>
+          <div class="hub" style="margin-top:12px;">
+            <div class="tile"><span class="ic"></span><span class="label">Create delivery</span><span class="label sm muted">register a new package</span></div>
+            <div class="tile"><span class="ic" style="background:var(--transit);"></span><span class="label">Active (11)</span><span class="label sm muted">dispatched + transit</span></div>
+            <div class="tile chain-only"><span class="ic" style="background:var(--chain);"></span><span class="label">Ledger</span><span class="label sm muted">verify any delivery</span></div>
+            <div class="tile"><span class="ic" style="background:var(--delivered);"></span><span class="label">Completed</span><span class="label sm muted">22 verified</span></div>
+          </div>
+          <div class="box" style="margin-top:11px;border-style:dashed;"><div class="row between"><span class="label sm">Recent · #DLV-2041</span><span class="chip transit"><span class="bead"></span>Transit</span></div></div>
+        </div>
+      </div>
+      <div class="note">Tiles swap per role: agent sees "My route", customer sees "Track a package"</div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- create (drilled in) -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 03 · <b>Create (drill-in)</b></div>
+      <div class="browser" style="width:420px;">
+        <div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">app.chaindeliver.io/home/new</span></div>
+        <div class="viewport">
+          <div class="row" style="gap:8px;margin-bottom:8px;"><span class="icbtn">‹</span><div class="label hd">New delivery</div></div>
+          <div class="col">
+            <div class="col"><div class="label sm">Pickup</div><div class="input block">Warehouse, Lagos</div></div>
+            <div class="col"><div class="label sm">Drop-off</div><div class="input block">Recipient address</div></div>
+            <div class="col"><div class="label sm">Package</div><div class="input block">Electronics · 2.4kg</div></div>
+            <div class="col"><div class="label sm">Assign agent</div><div class="input block">▾ M. Bello</div></div>
+            <div class="box" style="border-style:dashed;"><span class="label sm chain-only">⬡ mints record on-chain · est. gas</span></div>
+            <div class="btn cta block">Create &amp; record</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- ledger sheet -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Screen 04 · <b>Ledger / Verify Sheet</b></div>
+      <div class="browser" style="width:420px;">
+        <div class="chrome"><span class="lights"><i></i><i></i><i></i></span><span class="url">app.chaindeliver.io/home/ledger</span></div>
+        <div class="viewport">
+          <div class="row" style="gap:8px;margin-bottom:6px;"><span class="icbtn">‹</span><div class="label hd">Verify delivery</div></div>
+          <div class="input block" style="margin-bottom:10px;">⌕ enter #DLV or scan QR</div>
+          <div class="box solid">
+            <div class="row between"><div class="label">#DLV-2039 · Abuja → Jos</div><span class="verify">chain intact</span></div>
+            <div class="tl" style="margin-top:10px;">
+              <div class="step done"><div class="node"></div><div class="meta"><span class="label">Created</span><span class="when">0x9f2c…a18b</span></div></div>
+              <div class="step done"><div class="node"></div><div class="meta"><span class="label">Dispatched</span><span class="when">0x33aa…9b20</span></div></div>
+              <div class="step done"><div class="node"></div><div class="meta"><span class="label">Delivered + signed</span><span class="when">0xbe45…7f8a</span></div></div>
+            </div>
+            <div class="row between" style="margin-top:8px;"><span class="label sm chain-only">3 blocks · 0 tampered</span><span class="btn ghost sm chain-only">explorer ↗</span></div>
+          </div>
+          <div class="note free" style="margin-top:10px;">Anyone with the ID can verify — no login, no trust in one company</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow">→</div>
+
+    <!-- mobile hub variant -->
+    <div class="frame-wrap">
+      <div class="frame-cap">Same hub · <b>Mobile</b> <span class="role-pill">CUSTOMER</span></div>
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="appbar"><span class="ttl">Hi, Aisha</span><span class="icbtn">⬡</span></div>
+          <div class="body">
+            <div class="tile"><span class="ic" style="background:var(--transit);"></span><span class="label">Track a package</span><span class="label sm muted">1 in transit now</span></div>
+            <div class="tile chain-only"><span class="ic" style="background:var(--chain);"></span><span class="label">Verify a delivery</span><span class="label sm muted">check the ledger</span></div>
+            <div class="tile"><span class="ic" style="background:var(--delivered);"></span><span class="label">Confirm receipt</span><span class="label sm muted">1 awaiting you</span></div>
+            <div class="box" style="border-style:dashed;"><div class="row between"><span class="label sm">#DLV-2041</span><span class="chip transit"><span class="bead"></span>ETA 14:20</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="note free">Hub collapses to a single column — no bottom bar needed</div>
+    </div>
+  </div>
+</section>
+
+<footer class="page">
+  WIREFRAME SET · 4 navigation patterns × 3 roles · screens: login · dashboard · create · tracking · ledger · confirm-receipt · notifications — toggle the <b>Tweaks</b> panel to dial blockchain detail, grid &amp; sketch jitter.
+</footer>
+
+</div>
+
+<!-- React only mounts the Tweaks panel; the board is static HTML it nudges via classes -->
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script>
+// tab switching (vanilla — board is static)
+document.getElementById('tabs').addEventListener('click', function(e){
+  var btn = e.target.closest('.tab'); if(!btn) return;
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.toggle('active', t===btn);});
+  var id = btn.dataset.tab;
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.toggle('active', p.dataset.panel===id);});
+});
+</script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "grid": true,
+  "jitter": true,
+  "chainDetail": "moderate",
+  "accent": "#a47fd1"
+}/*EDITMODE-END*/;
+
+function applyTweaks(t){
+  const b = document.body;
+  b.classList.toggle('grid', !!t.grid);
+  b.classList.toggle('jitter', !!t.jitter);
+  b.classList.remove('detail-light','detail-moderate','detail-heavy');
+  b.classList.add('detail-'+t.chainDetail);
+  document.documentElement.style.setProperty('--accent', t.accent);
+}
+
+function App(){
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  React.useEffect(()=>{ applyTweaks(t); }, [t]);
+  return (
+    <TweaksPanel title="Tweaks">
+      <TweakSection label="Blockchain visibility" />
+      <TweakRadio label="Chain detail" value={t.chainDetail}
+        options={['light','moderate','heavy']}
+        onChange={(v)=>setTweak('chainDetail', v)} />
+      <TweakSection label="Sketch style" />
+      <TweakToggle label="Paper grid" value={t.grid} onChange={(v)=>setTweak('grid', v)} />
+      <TweakToggle label="Hand-drawn jitter" value={t.jitter} onChange={(v)=>setTweak('jitter', v)} />
+      <TweakColor label="Accent" value={t.accent}
+        options={['#a47fd1','#5a93d6','#5bab78','#d68a4e','#34322d']}
+        onChange={(v)=>setTweak('accent', v)} />
+    </TweaksPanel>
+  );
+}
+const host = document.createElement('div');
+document.body.appendChild(host);
+ReactDOM.createRoot(host).render(<App/>);
+</script>
+</body>
+</html>

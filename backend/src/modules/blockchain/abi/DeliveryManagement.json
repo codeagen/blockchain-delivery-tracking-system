@@ -1,0 +1,105 @@
+[
+  {
+    "type": "function",
+    "name": "createDelivery",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      { "name": "customer", "type": "address" },
+      { "name": "description", "type": "string" }
+    ],
+    "outputs": [{ "name": "id", "type": "uint256" }]
+  },
+  {
+    "type": "function",
+    "name": "assignAgent",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      { "name": "id", "type": "uint256" },
+      { "name": "agent", "type": "address" }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "updateStatus",
+    "stateMutability": "nonpayable",
+    "inputs": [
+      { "name": "id", "type": "uint256" },
+      { "name": "newStatus", "type": "uint8" }
+    ],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "confirmDelivery",
+    "stateMutability": "nonpayable",
+    "inputs": [{ "name": "id", "type": "uint256" }],
+    "outputs": []
+  },
+  {
+    "type": "function",
+    "name": "getDelivery",
+    "stateMutability": "view",
+    "inputs": [{ "name": "id", "type": "uint256" }],
+    "outputs": [
+      {
+        "name": "",
+        "type": "tuple",
+        "components": [
+          { "name": "id", "type": "uint256" },
+          { "name": "seller", "type": "address" },
+          { "name": "customer", "type": "address" },
+          { "name": "agent", "type": "address" },
+          { "name": "description", "type": "string" },
+          { "name": "status", "type": "uint8" },
+          { "name": "createdAt", "type": "uint256" },
+          { "name": "updatedAt", "type": "uint256" }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "function",
+    "name": "getDeliveryCount",
+    "stateMutability": "view",
+    "inputs": [],
+    "outputs": [{ "name": "", "type": "uint256" }]
+  },
+  {
+    "type": "event",
+    "name": "DeliveryCreated",
+    "anonymous": false,
+    "inputs": [
+      { "name": "id", "type": "uint256", "indexed": true },
+      { "name": "seller", "type": "address", "indexed": true },
+      { "name": "customer", "type": "address", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "AgentAssigned",
+    "anonymous": false,
+    "inputs": [
+      { "name": "id", "type": "uint256", "indexed": true },
+      { "name": "agent", "type": "address", "indexed": true }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "StatusUpdated",
+    "anonymous": false,
+    "inputs": [
+      { "name": "id", "type": "uint256", "indexed": true },
+      { "name": "newStatus", "type": "uint8", "indexed": false }
+    ]
+  },
+  {
+    "type": "event",
+    "name": "DeliveryConfirmed",
+    "anonymous": false,
+    "inputs": [
+      { "name": "id", "type": "uint256", "indexed": true },
+      { "name": "customer", "type": "address", "indexed": true }
+    ]
+  }
+]
