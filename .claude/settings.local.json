@@ -4,5 +4,9 @@
       "Bash(ls -la blockchain/)",
       "Bash(npm --version)"
     ]
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
   }
 }

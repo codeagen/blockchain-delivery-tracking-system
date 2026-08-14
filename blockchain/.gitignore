@@ -22,3 +22,8 @@ npm-debug.log*
 
 # editor / os
 .DS_Store
+
+.html
+.txt
+.claude/
+CLAUDE.md
